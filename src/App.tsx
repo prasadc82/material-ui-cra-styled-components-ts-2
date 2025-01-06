@@ -1,46 +1,24 @@
 import * as React from 'react';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
-import ProTip from './ProTip';
-import { Button, Card, styled as s, useMediaQuery} from '@mui/material';
-import styled, { ThemeProvider } from 'styled-components';
+import { Button, Card, CardContent, CardHeader, styled as s, Typography, useMediaQuery} from '@mui/material';
 import { LyraTheme } from './theme/lyra/Theme';
+import styled, { ThemeProvider } from 'styled-components';
 
-const CardX = styled(Card).attrs<{$isMobile: boolean;}>((props) => ({$isMobile: props.$isMobile}))(({theme, $isMobile}) => ({
-  background: $isMobile ? theme.palette.primary.main : theme.palette.secondary.main,
-  // background: $isMobile ? 'red' : 'white'
-}))
+const StyledCard = styled(Card).attrs<{$isMobile: boolean;}>((props) => ({$isMobile: props.$isMobile}))(({theme, $isMobile}) => ({
+  background: $isMobile ? theme.palette.primary.light : theme.palette.secondary.light,
+  textAlign: 'center',
+  border: `${theme.spacing(0.125)} solid ${theme.palette.grey[100]}`,
+  padding: theme.spacing(10),
+  borderRadius: 0
+}));
 
-
-const ButtonX = s(Button)(({theme}) => ({
-  background: theme.palette.primary.main,
-  color: theme.palette.common.white
-}))
-
-const ButtonY = styled(Button)(() => ({
-  background: 'red',
-  color: 'white'
-}))
-
-function Copyright() {
-  return (
-    <Typography
-      variant="body2"
-      align="center"
-      sx={{
-        color: 'text.secondary',
-      }}
-    >
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}.
-    </Typography>
-  );
-}
+const FlexRow = styled(Box)(({
+  display: 'flex',
+  alignSelf: 'center',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+}));
 
 export default function App() {
   const isMobile = useMediaQuery(LyraTheme.breakpoints.down('sm'))
@@ -49,17 +27,18 @@ export default function App() {
     <ThemeProvider theme={{...LyraTheme}}>
       <Container maxWidth="sm">
         <Box sx={{ my: 4 }}>
-          <Typography variant="h4" component="h1" sx={{ mb: 2 }}>
-            Material UI Create React App example with styled-components in TypeScript
-          </Typography>
-          <ProTip />
-          <Copyright />
-          <CardX $isMobile={isMobile} sx={{ height: '200px', textAlign: 'center', border: '1px solid #eee', margin: 2, p: 2}} elevation={0}>
-            <Box sx={{display: 'flex', alignSelf: 'center', alignItems: 'center', justifyContent: 'space-between', height: '100%'}}>
-              <ButtonX>Hello World !</ButtonX>
-              <ButtonY>Hello World !</ButtonY>
-            </Box>
-          </CardX>
+          <StyledCard $isMobile={isMobile} elevation={0}>
+            <CardHeader title={<Typography variant='h3'>Sample App</Typography>} sx={{color: 'common.white'}}>
+            </CardHeader>
+            <CardContent>
+              <FlexRow sx={{height: '100%'}}>
+                {/* with variant */}
+                <Button variant='contained'>Hello World !</Button>
+                {/* override color by sending theme color thru sxProps */}
+                <Button variant='outlined' sx={{color: 'common.white', borderColor: 'common.white'}}>Hello World !</Button>
+              </FlexRow>
+              </CardContent>
+          </StyledCard>
         </Box>
       </Container>
     </ThemeProvider>
