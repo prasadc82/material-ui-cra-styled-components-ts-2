@@ -4,8 +4,15 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import ProTip from './ProTip';
-import { Button, styled as s} from '@mui/material';
-import styled from 'styled-components';
+import { Button, Card, styled as s, useMediaQuery} from '@mui/material';
+import styled, { ThemeProvider } from 'styled-components';
+import { LyraTheme } from './theme/lyra/Theme';
+
+const CardX = styled(Card).attrs<{$isMobile: boolean;}>((props) => ({$isMobile: props.$isMobile}))(({theme, $isMobile}) => ({
+  background: $isMobile ? theme.palette.primary.main : theme.palette.secondary.main,
+  // background: $isMobile ? 'red' : 'white'
+}))
+
 
 const ButtonX = s(Button)(({theme}) => ({
   background: theme.palette.primary.main,
@@ -36,20 +43,25 @@ function Copyright() {
 }
 
 export default function App() {
+  const isMobile = useMediaQuery(LyraTheme.breakpoints.down('sm'))
 
   return (
-    <Container maxWidth="sm">
-      <Box sx={{ my: 4 }}>
-        <Typography variant="h4" component="h1" sx={{ mb: 2 }}>
-          Material UI Create React App example with styled-components in TypeScript
-        </Typography>
-        <ProTip />
-        <Copyright />
-        <Box sx={{display: 'flex', alignSelf: 'stretch', justifyContent: 'space-between'}}>
-          <ButtonX>Hello Chinmay !</ButtonX>
-          <ButtonY>Hello Chinmay !</ButtonY>
+    <ThemeProvider theme={{...LyraTheme}}>
+      <Container maxWidth="sm">
+        <Box sx={{ my: 4 }}>
+          <Typography variant="h4" component="h1" sx={{ mb: 2 }}>
+            Material UI Create React App example with styled-components in TypeScript
+          </Typography>
+          <ProTip />
+          <Copyright />
+          <CardX $isMobile={isMobile} sx={{ height: '200px', textAlign: 'center', border: '1px solid #eee', margin: 2, p: 2}} elevation={0}>
+            <Box sx={{display: 'flex', alignSelf: 'center', alignItems: 'center', justifyContent: 'space-between', height: '100%'}}>
+              <ButtonX>Hello World !</ButtonX>
+              <ButtonY>Hello World !</ButtonY>
+            </Box>
+          </CardX>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+    </ThemeProvider>
   );
 }
